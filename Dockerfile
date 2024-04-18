@@ -1,11 +1,13 @@
 # 设置基础镜像
-FROM node:14-alpine
+FROM node:latest
 
 # 设置工作目录
-WORKDIR /app
-
-# 复制 package.json 和 package-lock.json 到工作目录
-COPY package*.json ./
+ENV APP_HOME /app
+RUN mkdir -pv $APP_HOME
+WORKDIR $APP_HOME
+ADD . $APP_HOME
+ENV NODE_ENV production
+ENV NPM_CONFIG_LOGLEVEL warn
 
 # 安装依赖
 RUN npm install
