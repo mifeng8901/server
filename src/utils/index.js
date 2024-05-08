@@ -8,14 +8,14 @@ const { countryExp, countryMap } = require('../constants/index');
 const dayjs = require('dayjs');
 
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
-httpsAgent.options.rejectUnauthorized = false;
 
 const http = axios.create({
   headers: {
     'User-Agent': 'NekoBox/Android/1.3.3 (Prefer ClashMeta Format)',
   },
-  httpsAgent,
+  // httpsAgent,
 });
+
 
 dayjs.locale('zh-cn');
 
@@ -25,10 +25,7 @@ async function getSubinfo(url) {
       url = url.split('&')[0] + '&flag=clash';
     }
 
-    const { data, headers } = await http.get(url).catch((e) => {
-      console.log(e.response.data);
-      return {};
-    });
+    const { data, headers } = await http.get(url)
 
     if (!headers) {
       return { msg: '这个订阅貌似用不了啊' };
@@ -63,8 +60,10 @@ async function getSubinfo(url) {
     subDetail.count = rawProxies.length;
     subDetail.areas = getAreas(rawProxies);
 
+    console.log(subDetail);
     return subDetail;
   } catch (error) {
+    // console.log(error);
     return {};
   }
 }
@@ -80,10 +79,15 @@ function getAreas(proxies) {
 }
 
 async function getTitle(url) {
-  const { data } = await http.get(url);
-  const $ = cheerio.load(data);
-  const title = $('title').text();
-  return title;
+  try {
+    const { data } = await http.get(url);
+    const $ = cheerio.load(data);
+    const title = $('title').text();
+    return title;
+  }
+  catch (e) {
+    return null
+  }
 }
 
 function parseB(b) {
