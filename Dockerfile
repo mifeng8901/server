@@ -16,7 +16,7 @@ RUN npm install
 COPY . .
 
 # 暴露应用程序监听的端口（如果需要）
-EXPOSE 3300
+EXPOSE 3005
 
 # 设置启动命令
-CMD [ "node", "index.js" ]
+CMD [ "node", "src/index.js" ]
