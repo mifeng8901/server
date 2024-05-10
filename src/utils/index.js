@@ -46,7 +46,13 @@ async function getSubinfo(url) {
       subDetail = { ...subDetail, ...parseSubInfo(subInfo) };
     }
 
-    const { proxies = [] } = yaml.load(data) || {};
+    let { proxies = [] } = yaml.load(data) || {};
+
+    if (proxies.length === 0) {
+      const { data } = await http.get(url.split('&')[0]);
+      proxies = yaml.load(data)?.proxies || [];
+    }
+
     const nodeMap = new Map();
     proxies.forEach((proxy) => {
       if (
