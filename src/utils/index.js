@@ -13,7 +13,7 @@ const http = axios.create({
   headers: {
     'User-Agent': 'NekoBox/Android/1.3.3 (Prefer ClashMeta Format)',
   },
-  // httpsAgent,
+  httpsAgent,
 });
 
 
